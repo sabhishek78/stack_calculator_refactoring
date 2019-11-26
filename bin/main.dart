@@ -29,9 +29,8 @@ int stackCalc(String argument) {
   for (int i = 0; i < walkthrough.length; i++) {
     if (walkthrough[i] == '+') {
       if (stack.length >= 2) {
-        stack.add(stack.last + stack[stack.length - 2]);
-        stack.removeAt(stack.length - 2);
-        stack.removeAt(stack.length - 2);
+        operateStack(add,stack);
+
       }
     } else if (walkthrough[i] == 'DUP') {
       if (stack.isNotEmpty) {
@@ -43,21 +42,15 @@ int stackCalc(String argument) {
       }
     } else if (walkthrough[i] == '-') {
       if (stack.length >= 2) {
-        stack.add(stack.last - stack[stack.length - 2]);
-        stack.removeAt(stack.length - 2);
-        stack.removeAt(stack.length - 2);
+        operateStack(subtract,stack);
       }
     } else if (walkthrough[i] == '*') {
       if (stack.length >= 2) {
-        stack.add(stack.last * stack[stack.length - 2]);
-        stack.removeAt(stack.length - 2);
-        stack.removeAt(stack.length - 2);
+        operateStack(mul,stack);
       }
     } else if (walkthrough[i] == '/') {
       if (stack.length >= 2) {
-        stack.add(stack.last ~/ stack[stack.length - 2]);
-        stack.removeAt(stack.length - 2);
-        stack.removeAt(stack.length - 2);
+        operateStack(div,stack);
       }
     } else {
       (stack.add(int.parse(walkthrough[i])));
@@ -67,7 +60,22 @@ int stackCalc(String argument) {
 
   return stack.last;
 }
+operateStack(Function function, List<int> stack){
+  return stack.add(function(stack.removeLast(),stack.removeLast()));
 
+}
+int add(int x, int y){
+  return x+y;
+}
+int subtract(int x, int y){
+  return x-y;
+}
+int mul(int x, int y){
+  return x*y;
+}
+int div(int x, int y){
+  return x~/y;
+}
 main() {
-  print(stackCalc("3 *"));
+  print(stackCalc("3 4 *"));
 }
